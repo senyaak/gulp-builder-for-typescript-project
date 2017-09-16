@@ -2,6 +2,9 @@ var gulp = require('gulp');
 var ts = require('gulp-typescript');
 var clean = require('gulp-clean');
 var path = require('path');
+var inject = require('gulp-inject');
+var less = require('gulp-less');
+
 
 var tsConfServer = {
   target: 'es6',
@@ -20,7 +23,7 @@ var tsConfClient = {
 var tsProjectServer = ts.createProject('tsconfig.json', tsConfServer);
 var tsProjectClient = ts.createProject('tsconfig.json', tsConfClient);
 
-gulp.task('default', ['public'], () => {
+gulp.task('default', ['inject'], () => {
   return;
 });
 
@@ -58,15 +61,24 @@ gulp.task('clean', () => {
     .pipe(clean({force: true}));
 });
 
+gulp.task('less', [ 'compile:client'], () => {
+  return gulp.src('./src/**/*.less')
+  .pipe(less({
+    paths: [ path.join(__dirname, 'less', 'includes') ]
+  }))
+  .pipe(gulp.dest('./built/client'));
+});
+
 gulp.task('public', ['less'], () => {
   return gulp.src('./public/**/*')
     .pipe(gulp.dest('./built'));
 });
 
-gulp.task('less', [ 'compile:client'], () => {
-  return gulp.src('./src/*.less')
-    .pipe(less({
-      paths: [ path.join(__dirname, 'less', 'includes') ]
-    }))
-    .pipe(gulp.dest('./built/client'));
+gulp.task('inject', ['public'], () => {
+  var target = gulp.src('./built/index.html');
+  // It's not necessary to read the files (will speed up things), we're only after their paths:
+  var sources = gulp.src(['./built/client/**/*.js', './built/**/*.css'], {read: false});
+
+  return target.pipe(inject(sources))
+    .pipe(gulp.dest('./built'));
 });

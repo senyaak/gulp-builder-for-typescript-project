@@ -1,0 +1,12 @@
+{
+  "name": "your_name_hier",
+  "version": "0.0.1",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-typescript": "^2.13.6",
+    "gulp-less": "^3.3.2",
+    "less": "^2.7.2",
+    "gulp-inject": "^4.3.0"
+  }
+}
