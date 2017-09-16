@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6"
+  },
+  "filesGlob": [
+    "src/server/app.ts",
+    "src/**/*.ts",
+    "src/*.ts",
+    "typings/**/*.d.ts",
+    "!node_modules"
+  ],
+  "compileOnSave": false,
+  "buildOnSave": false
+}
